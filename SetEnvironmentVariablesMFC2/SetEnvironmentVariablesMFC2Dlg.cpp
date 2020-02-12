@@ -487,7 +487,7 @@ void CSetEnvironmentVariablesMFC2Dlg::OnBnClickedButton1()
 		Sleep(300);
 		regstr = RegQueryBb(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment", "Path");
 		//备份PATH
-		isSucess = RegSetValueBb(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment", "Path_BAK", REG_EXPAND_SZ, regstr.c_str());
+		isSucess = RegSetValueBb(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment", "Path_Reg_BAK", REG_EXPAND_SZ, regstr.c_str());
 		//设置PATH
 		GetDlgItemText(IDC_EDIT1, str);
 		results[0] = RegSetValueBb(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment", "GOROOT", REG_EXPAND_SZ, std::string(CT2A(str.GetString())).c_str());
@@ -509,7 +509,7 @@ void CSetEnvironmentVariablesMFC2Dlg::OnBnClickedButton1()
 		regRes = string2wstring(regstr);
 		adVaule = regstr + ";%GOROOT%\\bin;%GOPATH%\\bin";
 		adVaule = stringDISTINCT(adVaule.c_str(), ";"); //排序并去重
-		results[7] = RegSetValueBb(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment", "Path3", REG_EXPAND_SZ, adVaule.c_str());
+		results[7] = RegSetValueBb(HKEY_LOCAL_MACHINE, "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment", "Path", REG_EXPAND_SZ, adVaule.c_str());
 		for (int result : results) {
 			if (result ==0) {
 				isSucess = 0;
@@ -542,7 +542,7 @@ void CSetEnvironmentVariablesMFC2Dlg::OnBnClickedButton1()
 		std::string pathstr = "";
 		errno_t err = _dupenv_s(&pathvar, &len, "PATH"); //获得PATH的内容
 		//备份Path
-		std::string const& bak = "cmd.exe /c C:\\Windows\\System32\\setx.exe -m  PATH_BAK \"" + std::string(pathvar) + "\"";
+		std::string const& bak = "cmd.exe /c C:\\Windows\\System32\\setx.exe -m  PATH_SETX_BAK \"" + std::string(pathvar) + "\"";
 		results[6] = WinExec(bak.c_str(), SW_HIDE);//隐藏控制
 	
 		//设置Path
@@ -552,7 +552,7 @@ void CSetEnvironmentVariablesMFC2Dlg::OnBnClickedButton1()
 		int num = MultiByteToWideChar(0, 0, pathvar2, -1, NULL, 0);
 		wchar_t* wide = new wchar_t[num];
 		MultiByteToWideChar(0, 0, pathvar2, -1, wide, num);
-		std::string const& cc = "cmd.exe /c C:\\Windows\\System32\\setx.exe -m  PATH3 \"" + std::string(wchar2char(wide)) + "\"";
+		std::string const& cc = "cmd.exe /c C:\\Windows\\System32\\setx.exe -m  PATH \"" + std::string(wchar2char(wide)) + "\"";
 		results[6] = WinExec(cc.c_str(), SW_HIDE);//隐藏控制
 		
 	
