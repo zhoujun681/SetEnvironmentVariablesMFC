@@ -1,0 +1,6 @@
+/SetEnvironmentVariablesMFC2/Debug/*
+/SetEnvironmentVariablesMFC2/Release/*
+/.vs
+/.vs/*
+/.git
+/.git/*
